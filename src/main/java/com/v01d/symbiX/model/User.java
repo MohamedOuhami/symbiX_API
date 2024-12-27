@@ -47,4 +47,21 @@ public class User {
     this.password = password;
   }
 
+  public void setDob(LocalDate dob) {
+    this.dob = dob;
+  }
+
+  public void setLastName(String lastName) {
+    this.lastName = lastName;
+  }
+
+  public void setFirstName(String firstName) {
+    this.firstName = firstName;
+  }
+
+  public void setProfilePic(String profilePic) {
+    this.profilePic = profilePic;
+  }
+
+  
 }
