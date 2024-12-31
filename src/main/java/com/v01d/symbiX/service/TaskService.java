@@ -9,11 +9,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.v01d.symbiX.model.Task;
-import com.v01d.symbiX.model.Task;
+import com.v01d.symbiX.model.Project;
 import com.v01d.symbiX.model.User;
 import com.v01d.symbiX.repository.TaskRepository;
-import com.v01d.symbiX.repository.TaskRepository;
 import com.v01d.symbiX.repository.UserRepository;
+import com.v01d.symbiX.repository.ProjectRepository;
 
 /**
  * TaskService
@@ -26,6 +26,9 @@ public class TaskService {
 
   @Autowired
   private UserRepository userRepository;
+
+  @Autowired
+  private ProjectRepository projectRepository;
 
   // Create new Task
   public Task createTask(Task task) {
@@ -80,7 +83,8 @@ public class TaskService {
       throw new Exception("Cannot find the member of the task : " + taskId);
     }
   }
-  
+
+  // Assign members to the task
   public Task assignMembers(List<String> membersIds, String taskId) throws Exception {
 
     Optional<Task> existingTask = taskRepository.findById(taskId);
@@ -95,7 +99,7 @@ public class TaskService {
 
       task.setCollaboratorsIds(originalMembersIds);
 
-      // Set the projectList of the users
+      // Set the taskList of the users
 
       List<User> newMembers = userRepository.findAllById(originalMembersIds);
 
@@ -103,7 +107,7 @@ public class TaskService {
 
         List<String> memberTasks = member.getTasksIds();
 
-        if(memberTasks == null){
+        if (memberTasks == null) {
           memberTasks = new ArrayList<>();
         }
 
@@ -117,8 +121,49 @@ public class TaskService {
 
       return task;
     } else {
-      throw new Exception("Cannot find the member of the project : " + taskId);
+      throw new Exception("Cannot find the member of the task : " + taskId);
     }
+  }
+
+  // Assign to Project
+
+  public Task assignToProject(List<String> projectId, String taskId) throws Exception {
+
+    Optional<Task> existingTask = taskRepository.findById(taskId);
+
+    if (existingTask.isPresent()) {
+      Task task = existingTask.get();
+
+      task.setProjectId(projectId.get(0));
+
+      // Set the taskList of the user
+      Optional<Project> optionalProject = projectRepository.findById(projectId.get(0));
+
+      if (optionalProject.isPresent()) {
+
+        Project existingProject = optionalProject.get();
+        System.out.println("This is the project to change " + existingProject);
+
+        Set<String> projectTasks = existingProject.getTasksIds();
+
+        projectTasks.add(taskId);
+
+        existingProject.setTeamsIds(projectTasks);
+
+        taskRepository.save(task);
+        projectRepository.save(existingProject);
+
+      } else {
+        System.out.println("Could not find the project of id " + projectId);
+      }
+      return task;
+
+    } else
+
+    {
+      throw new Exception("Cannot find the member of the task : " + taskId);
+    }
+
   }
 
   // Delete the task By ID

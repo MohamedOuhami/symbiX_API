@@ -102,6 +102,12 @@ public class TaskController {
   }
 
 
+  // Assign new members
+  @PutMapping("{taskId}/assignToProject")
+  public ResponseEntity<Task> assignToProject(@RequestBody List<String> projectId,@PathVariable String taskId) throws Exception{
+    return ResponseEntity.ok(taskService.assignToProject(projectId, taskId));
+  }
+
 
 }
 

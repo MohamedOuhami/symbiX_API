@@ -129,7 +129,7 @@ public class ProjectService {
   }
 
   // Assign new members
-  public Project assignTeams(List<String> teamsIds, String projectId) throws Exception {
+  public Project assignToTeams(List<String> teamsIds, String projectId) throws Exception {
 
     Optional<Project> existingProject = projectRepository.findById(projectId);
 

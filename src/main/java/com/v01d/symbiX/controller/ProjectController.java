@@ -108,9 +108,9 @@ public class ProjectController {
 
 
   // Assign new members
-  @PutMapping("{projectId}/assignTeams")
+  @PutMapping("{projectId}/assignToTeams")
   public ResponseEntity<Project> assignTeam(@RequestBody List<String> teamsIds,@PathVariable String projectId) throws Exception{
-    return ResponseEntity.ok(projectService.assignTeams(teamsIds, projectId));
+    return ResponseEntity.ok(projectService.assignToTeams(teamsIds, projectId));
   }
 
 }

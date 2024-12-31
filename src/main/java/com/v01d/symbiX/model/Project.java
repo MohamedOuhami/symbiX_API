@@ -137,4 +137,8 @@ public class Project {
   public void setCollaboratorsIds(Set<String> collaboratorsIds) {
     this.collaboratorsIds = collaboratorsIds;
   }
+
+  public void setTasksIds(Set<String> tasksIds) {
+    this.tasksIds = tasksIds;
+  }
 }
