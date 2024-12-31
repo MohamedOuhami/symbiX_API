@@ -1,6 +1,7 @@
 package com.v01d.symbiX.model;
 
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.Set;
 
 import org.springframework.data.annotation.Id;
@@ -48,6 +49,8 @@ public class Project {
 
     this.teamsIds = teamsIds;
 
+    this.collaboratorsIds = new HashSet<>();
+
   }
 
   public Project() {
@@ -93,6 +96,8 @@ public class Project {
     return collaboratorsIds;
   }
 
+  
+
   public void setId(String id) {
     this.id = id;
   }
@@ -113,7 +118,7 @@ public class Project {
     this.ownerId = ownerId;
   }
 
-  public void setTasksIds(Set<String> tasksIds) {
+  public void setIds(Set<String> tasksIds) {
     this.tasksIds = tasksIds;
   }
 

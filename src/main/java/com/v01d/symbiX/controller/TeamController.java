@@ -2,6 +2,7 @@ package com.v01d.symbiX.controller;
 
 import java.util.List;
 
+import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
@@ -36,6 +37,12 @@ public class TeamController {
   public ResponseEntity<List<Team>> getAllTeams() {
 
     return ResponseEntity.ok(teamService.getAllTeams());
+  }
+
+  // Get team by teamId
+  @GetMapping("/{teamId}")
+  public ResponseEntity<Team> getTeamById(@PathVariable String teamId) throws Exception {
+    return ResponseEntity.ok(teamService.getTeamById(teamId));
   }
 
   // Create a new Team
@@ -91,6 +98,13 @@ public class TeamController {
     } catch (Exception e) {
       return ResponseEntity.status(HttpStatus.CONFLICT).body(null);
     }
+  }
+
+  // Assign new members
+  @PutMapping("{teamId}/assignMembers")
+  public ResponseEntity<Team> assignTeam(@RequestBody List<String> membersIds, @PathVariable String teamId)
+      throws Exception {
+    return ResponseEntity.ok(teamService.assignMembers(membersIds, teamId));
   }
 
 }

@@ -1,6 +1,7 @@
 package com.v01d.symbiX.model;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -33,6 +34,12 @@ public class User {
 
   private LocalDate dob;
 
+  private List<String> projectsIds;
+
+  private List<String> teamsIds;
+
+  private List<String> tasksIds;
+
   private String password;
 
   public String getEmail() {
@@ -63,5 +70,28 @@ public class User {
     this.profilePic = profilePic;
   }
 
-  
+  public void setProjectsIds(List<String> projectsIds) {
+    this.projectsIds = projectsIds;
+  }
+
+  public void setTeamsIds(List<String> teamsIds) {
+    this.teamsIds = teamsIds;
+  }
+
+  public void setTasksIds(List<String> tasksIds) {
+    this.tasksIds = tasksIds;
+  }
+
+  public List<String> getProjectsIds() {
+    return this.projectsIds;
+  }
+
+  public List<String> getTeamsIds() {
+    return this.teamsIds;
+  }
+
+  public List<String> getTasksIds() {
+    return this.tasksIds;
+  }
+
 }
