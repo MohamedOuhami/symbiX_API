@@ -46,16 +46,16 @@ In this document, we are creating a plan for our API and the different endpoints
 - [X] Delete a team "/"
 
 # Project endpoints "/api/v1/projects"
-- [ ] Create a new project
-- [ ] Get a project by Id "/{id}"
-- [ ] Edit the info of a project "/"
-- [ ] See the members of the projects "/members"
-- [ ] See the tasks of the project "/tasks"
-- [ ] Delete a project "/"
+- [X] Create a new project
+- [X] Get a project by Id "/{id}"
+- [X] Edit the info of a project "/"
+- [X] See the members of the projects "/members"
+- [X] See the tasks of the project "/tasks"
+- [X] Delete a project "/"
 
 # Task endpoints "/api/v1/tasks"
-- [ ] Create a task "/"
-- [ ] Get a task by ID "/{id}"
-- [ ] Edit the info of a task "/"
-- [ ] See the members of the task "/members"
-- [ ] Delete a task
+- [X] Create a task "/"
+- [X] Get a task by ID "/{id}"
+- [X] Edit the info of a task "/"
+- [X] See the members of the task "/members"
+- [X] Delete a task

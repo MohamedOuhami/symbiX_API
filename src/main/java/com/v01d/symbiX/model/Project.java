@@ -4,16 +4,27 @@ import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
+
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 
 /**
  * Project
  */
-@Document
+@Entity
 public class Project {
+
   @Id
-  private String id;
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
   private String name;
 
@@ -25,16 +36,21 @@ public class Project {
 
   private LocalDate endDate;
 
-  private String ownerId;
+  @ManyToOne
+  @JoinColumn(name = "owner_id")
+  private User owner;
 
-  private Set<String> collaboratorsIds;
+  @ManyToMany(mappedBy = "projects")
+  private Set<User> collaborators;
 
-  private Set<String> teamsIds;
+  @ManyToMany(mappedBy = "projects")
+  private Set<Team> teams;
 
-  private Set<String> tasksIds;
+  @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
+  private Set<Task> tasks;
 
   public Project(String name, String description, LocalDate startDate, LocalDate dueDate, LocalDate endDate,
-      String ownerId, Set<String> teamsIds) {
+      User owner, Set<Team> teams) {
 
     this.name = name;
 
@@ -44,101 +60,90 @@ public class Project {
     this.dueDate = dueDate;
 
     this.endDate = endDate;
-
-    this.ownerId = ownerId;
-
-    this.teamsIds = teamsIds;
-
-    this.collaboratorsIds = new HashSet<>();
 
   }
 
   public Project() {
   }
 
-  public String getId() {
-    return id;
-  }
-
   public String getName() {
     return name;
-  }
-
-  public LocalDate getDueDate() {
-    return dueDate;
-  }
-
-  public LocalDate getEndDate() {
-    return endDate;
-  }
-
-  public String getOwnerId() {
-    return ownerId;
-  }
-
-  public Set<String> getTasksIds() {
-    return tasksIds;
-  }
-
-  public Set<String> getTeamsIds() {
-    return teamsIds;
-  }
-
-  public LocalDate getStartDate() {
-    return startDate;
-  }
-
-  public String getDescription() {
-    return description;
-  }
-
-  public Set<String> getCollaboratorsIds() {
-    return collaboratorsIds;
-  }
-
-  
-
-  public void setId(String id) {
-    this.id = id;
   }
 
   public void setName(String name) {
     this.name = name;
   }
 
-  public void setDueDate(LocalDate dueDate) {
-    this.dueDate = dueDate;
-  }
-
-  public void setEndDate(LocalDate endDate) {
-    this.endDate = endDate;
-  }
-
-  public void setOwnerId(String ownerId) {
-    this.ownerId = ownerId;
-  }
-
-  public void setIds(Set<String> tasksIds) {
-    this.tasksIds = tasksIds;
-  }
-
-  public void setTeamsIds(Set<String> teamsIds) {
-    this.teamsIds = teamsIds;
-  }
-
-  public void setStartDate(LocalDate startDate) {
-    this.startDate = startDate;
+  public String getDescription() {
+    return description;
   }
 
   public void setDescription(String description) {
     this.description = description;
   }
 
-  public void setCollaboratorsIds(Set<String> collaboratorsIds) {
-    this.collaboratorsIds = collaboratorsIds;
+  public LocalDate getStartDate() {
+    return startDate;
   }
 
-  public void setTasksIds(Set<String> tasksIds) {
-    this.tasksIds = tasksIds;
+  public void setStartDate(LocalDate startDate) {
+    this.startDate = startDate;
   }
+
+  public LocalDate getDueDate() {
+    return dueDate;
+  }
+
+  public void setDueDate(LocalDate dueDate) {
+    this.dueDate = dueDate;
+  }
+
+  public LocalDate getEndDate() {
+    return endDate;
+  }
+
+  public void setEndDate(LocalDate endDate) {
+    this.endDate = endDate;
+  }
+
+  public User getOwner() {
+    return owner;
+  }
+
+  public void setOwner(User owner) {
+    this.owner = owner;
+  }
+
+  public Set<User> getCollaborators() {
+    return collaborators;
+  }
+
+  public void setCollaborators(Set<User> collaborators) {
+    this.collaborators = collaborators;
+  }
+
+  public Set<Team> getTeams() {
+    return teams;
+  }
+
+  public void setTeams(Set<Team> teams) {
+    this.teams = teams;
+  }
+
+  public Set<Task> getTasks() {
+    return tasks;
+  }
+
+  public void setTasks(Set<Task> tasks) {
+    this.tasks = tasks;
+  }
+
+  public Long getId() {
+    return id;
+  }
+
+  public void setId(Long id) {
+    this.id = id;
+  }
+
 }

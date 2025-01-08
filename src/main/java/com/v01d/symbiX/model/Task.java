@@ -1,20 +1,28 @@
 package com.v01d.symbiX.model;
 
 import java.time.LocalDate;
-import java.util.List;
 import java.util.Set;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 
 /**
  * Task
  */
-@Document
+@Entity
 public class Task {
 
   @Id
-  private String id;
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
   private String name;
 
@@ -28,17 +36,19 @@ public class Task {
 
   private String currentState;
 
-  private String leaderId;
+  @ManyToMany(mappedBy = "tasks")
+  private Set<User> collaborators;
 
-  private Set<String> collaboratorsIds;
-
-  private String projectId;
+  @ManyToOne(fetch=FetchType.LAZY)
+  @JoinColumn(name = "project_id", nullable = false)
+  private Project project;
 
   public Task() {
   }
 
-  public Task(String name, String description, LocalDate startDate, LocalDate dueDate, String leaderId,
-      String projectId) {
+  public Task(String name, String description, LocalDate startDate, LocalDate dueDate,
+      Project project) {
+
     this.name = name;
     this.description = description;
 
@@ -46,21 +56,11 @@ public class Task {
 
     this.dueDate = dueDate;
 
-    this.leaderId = leaderId;
-
-    this.projectId = projectId;
-  }
-
-  public String getId() {
-    return id;
+    this.project = project;
   }
 
   public String getName() {
     return name;
-  }
-
-  public Set<String> getCollaboratorsIds() {
-    return collaboratorsIds;
   }
 
   public LocalDate getStartDate() {
@@ -79,20 +79,8 @@ public class Task {
     return dueDate;
   }
 
-  public String getLeaderId() {
-    return leaderId;
-  }
-
-  public String getProjectId() {
-    return projectId;
-  }
-
   public String getCurrentState() {
     return currentState;
-  }
-
-  public void setCollaboratorsIds(Set<String> collaboratorsIds) {
-    this.collaboratorsIds = collaboratorsIds;
   }
 
   public void setDescription(String description) {
@@ -115,20 +103,32 @@ public class Task {
     this.name = name;
   }
 
-  public void setId(String id) {
-    this.id = id;
-  }
-
-  public void setLeaderId(String leaderId) {
-    this.leaderId = leaderId;
-  }
-
-  public void setProjectId(String projectId) {
-    this.projectId = projectId;
-  }
-
   public void setCurrentState(String currentState) {
     this.currentState = currentState;
+  }
+
+  public Set<User> getCollaborators() {
+    return collaborators;
+  }
+
+  public void setCollaborators(Set<User> collaborators) {
+    this.collaborators = collaborators;
+  }
+
+  public Project getProject() {
+    return project;
+  }
+
+  public void setProject(Project project) {
+    this.project = project;
+  }
+
+  public Long getId() {
+    return id;
+  }
+
+  public void setId(Long id) {
+    this.id = id;
   }
 
 }

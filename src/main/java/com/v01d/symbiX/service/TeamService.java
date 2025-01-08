@@ -64,89 +64,89 @@ public class TeamService {
     }
   }
 
-  // Get the team members
-  public List<User> getTeamMembers(String teamId) throws Exception {
-    Optional<Team> existingTeam = teamRepository.findById(teamId);
-
-    if (existingTeam.isPresent()) {
-      Team team = existingTeam.get();
-
-      Set<String> membersIds = team.getMembersIds();
-      System.out.println("These are the members Ids " + membersIds);
-
-      List<User> members = userRepository.findAllById(membersIds);
-
-      System.out.println("And these are the members Objects " + members);
-
-      return members;
-    } else {
-      throw new Exception("Cannot find the member of the team : " + teamId);
-    }
-  }
-
-  // Get the team projects
-  public List<Project> getTeamProjects(String teamId) throws Exception {
-    Optional<Team> existingTeam = teamRepository.findById(teamId);
-
-    if (existingTeam.isPresent()) {
-      Team team = existingTeam.get();
-
-      Set<String> projectsIds = team.getProjectsIds();
-      System.out.println("These are the members Ids " + projectsIds);
-
-      List<Project> projects = projectRepository.findAllById(projectsIds);
-
-      System.out.println("And these are the members Objects " + projects);
-
-      return projects;
-    } else {
-      throw new Exception("Cannot find the member of the team : " + teamId);
-    }
-  }
-
-  // Assign new members
-   
-  public Team assignMembers(List<String> membersIds, String teamId) throws Exception {
-
-    Optional<Team> existingTeam = teamRepository.findById(teamId);
-
-    if (existingTeam.isPresent()) {
-      Team team = existingTeam.get();
-
-      Set<String> originalMembersIds = team.getMembersIds();
-      System.out.println("These are the members Ids " + membersIds);
-
-      originalMembersIds.addAll(membersIds);
-
-      team.setMembersIds(originalMembersIds);
-
-      // Set the projectList of the users
-
-      List<User> newMembers = userRepository.findAllById(originalMembersIds);
-
-      for (User member : newMembers) {
-
-        List<String> memberTeams = member.getTeamsIds();
-
-        if(memberTeams == null){
-          memberTeams = new ArrayList<>();
-        }
-
-        memberTeams.add(team.getId());
-
-        member.setTeamsIds(memberTeams);
-
-        userRepository.save(member);
-        teamRepository.save(team);
-      }
-
-      return team;
-    } else {
-      throw new Exception("Cannot find the member of the project : " + teamId);
-    }
-  }
-
-
+  //// Get the team members
+  //public List<User> getTeamMembers(String teamId) throws Exception {
+  //  Optional<Team> existingTeam = teamRepository.findById(teamId);
+  //
+  //  if (existingTeam.isPresent()) {
+  //    Team team = existingTeam.get();
+  //
+  //    Set<String> membersIds = team.getMembersIds();
+  //    System.out.println("These are the members Ids " + membersIds);
+  //
+  //    List<User> members = userRepository.findAllById(membersIds);
+  //
+  //    System.out.println("And these are the members Objects " + members);
+  //
+  //    return members;
+  //  } else {
+  //    throw new Exception("Cannot find the member of the team : " + teamId);
+  //  }
+  //}
+  //
+  //// Get the team projects
+  //public List<Project> getTeamProjects(String teamId) throws Exception {
+  //  Optional<Team> existingTeam = teamRepository.findById(teamId);
+  //
+  //  if (existingTeam.isPresent()) {
+  //    Team team = existingTeam.get();
+  //
+  //    Set<String> projectsIds = team.getProjectsIds();
+  //    System.out.println("These are the members Ids " + projectsIds);
+  //
+  //    List<Project> projects = projectRepository.findAllById(projectsIds);
+  //
+  //    System.out.println("And these are the members Objects " + projects);
+  //
+  //    return projects;
+  //  } else {
+  //    throw new Exception("Cannot find the member of the team : " + teamId);
+  //  }
+  //}
+  //
+  //// Assign new members
+  //
+  //public Team assignMembers(List<String> membersIds, String teamId) throws Exception {
+  //
+  //  Optional<Team> existingTeam = teamRepository.findById(teamId);
+  //
+  //  if (existingTeam.isPresent()) {
+  //    Team team = existingTeam.get();
+  //
+  //    Set<String> originalMembersIds = team.getMembersIds();
+  //    System.out.println("These are the members Ids " + membersIds);
+  //
+  //    originalMembersIds.addAll(membersIds);
+  //
+  //    team.setMembersIds(originalMembersIds);
+  //
+  //    // Set the projectList of the users
+  //
+  //    List<User> newMembers = userRepository.findAllById(originalMembersIds);
+  //
+  //    for (User member : newMembers) {
+  //
+  //      List<String> memberTeams = member.getTeamsIds();
+  //
+  //      if(memberTeams == null){
+  //        memberTeams = new ArrayList<>();
+  //      }
+  //
+  //      memberTeams.add(team.getId());
+  //
+  //      member.setTeamsIds(memberTeams);
+  //
+  //      userRepository.save(member);
+  //      teamRepository.save(team);
+  //    }
+  //
+  //    return team;
+  //  } else {
+  //    throw new Exception("Cannot find the member of the project : " + teamId);
+  //  }
+  //}
+  //
+  //
   // Delete the team By ID
   public String deleteTeam(String teamId) {
     try {

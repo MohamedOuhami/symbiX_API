@@ -1,24 +1,22 @@
 package com.v01d.symbiX.controller;
 
+
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.v01d.symbiX.dto.LoginRequest;
-import com.v01d.symbiX.dto.LoginResponse;
-import com.v01d.symbiX.dto.UserDto;
-import com.v01d.symbiX.helper.JwtHelper;
+import com.v01d.symbiX.dto.AuthResponseDto;
+import com.v01d.symbiX.dto.LoginRequestDto;
+import com.v01d.symbiX.dto.RegisterDto;
 import com.v01d.symbiX.model.User;
-import com.v01d.symbiX.service.UserService;
-
-import jakarta.validation.Valid;
-
+import com.v01d.symbiX.repository.UserRepository;
+import com.v01d.symbiX.service.AuthServiceImpl;
 /**
  * AuthController
  */
@@ -26,25 +24,39 @@ import jakarta.validation.Valid;
 @RequestMapping("/api/v1/auth")
 public class AuthController {
 
-  
   @Autowired
-  private UserService userService;
+  private AuthServiceImpl authService;
 
   @Autowired
-  private AuthenticationManager authenticationManager;
-  
-  // Register a new User
-  @PostMapping("/signup")
-  public ResponseEntity<Void> signup(@Valid @RequestBody User user){
-    userService.signup(user);
-    return ResponseEntity.status(HttpStatus.CREATED).build();
-  }
+  private UserRepository userRepository;
 
-  // Login endpoint
   @PostMapping("/login")
-  public ResponseEntity<LoginResponse> login(@Valid @RequestBody LoginRequest request){
-    authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
-    String jwtToken = JwtHelper.generateToken(request.getEmail());
-    return ResponseEntity.ok(new LoginResponse(request.getEmail(),jwtToken));
+  // Build the Login REST api
+  public ResponseEntity<AuthResponseDto> login(@RequestBody LoginRequestDto loginDto){
+
+    System.out.println("From the Auth Controller");
+    System.out.println(loginDto);
+
+    // Receive the token from the auth service
+    String token = authService.login(loginDto);
+
+    System.out.println("This is supposed to be the token " + token);
+
+    // Set the token as a response using JwtAuthResponse Dto class
+    AuthResponseDto authResponseDto = new AuthResponseDto();
+    authResponseDto.setAccessToken(token);
+
+    // Return the response to the user
+    return new ResponseEntity<>(authResponseDto,HttpStatus.OK);
   }
+
+  @PostMapping("/register")
+  public ResponseEntity<User> register(@RequestBody RegisterDto registerDto) throws Exception{
+
+    System.out.println("========== Registering new data =========");
+    User userSaved = authService.register(registerDto);
+    return ResponseEntity.ok(userSaved);
+  }
+  
+
 }

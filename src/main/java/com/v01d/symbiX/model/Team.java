@@ -2,17 +2,25 @@ package com.v01d.symbiX.model;
 
 import java.util.Set;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
 
 /**
  * Team
  */
-@Document
+@Entity
 public class Team {
 
   @Id
-  private String id;
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
   private String name;
 
@@ -20,20 +28,25 @@ public class Team {
 
   private Set<String> tags;
 
-  private String ownerId;
+  @ManyToOne
+  @JoinColumn(name = "owner_id", nullable = false)
+  private User owner;
 
-  private Set<String> membersIds;
+  @ManyToMany(mappedBy = "teams")
+  private Set<User> members;
 
-  private Set<String> projectsIds;
+  @ManyToMany
+  @JoinTable(name = "teams_projects", joinColumns = @JoinColumn(name = "team_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "project_id", referencedColumnName = "id"))
+  private Set<Project> projects;
 
   public Team() {
   }
 
-  public Team(String name, String description, Set<String> tags, String ownerId) {
+  public Team(String name, String description, Set<String> tags, User owner) {
     this.name = name;
     this.description = description;
     this.tags = tags;
-    this.ownerId = ownerId;
+    this.owner = owner;
   }
 
   public String getDescription() {
@@ -44,28 +57,8 @@ public class Team {
     return name;
   }
 
-  public String getId() {
-    return id;
-  }
-
-  public String getOwnerId() {
-    return ownerId;
-  }
-
   public Set<String> getTags() {
     return tags;
-  }
-
-  public Set<String> getMembersIds() {
-    return membersIds;
-  }
-
-  public Set<String> getProjectsIds() {
-    return projectsIds;
-  }
-
-  public void setId(String id) {
-    this.id = id;
   }
 
   public void setName(String name) {
@@ -76,20 +69,40 @@ public class Team {
     this.description = description;
   }
 
-  public void setOwnerId(String ownerId) {
-    this.ownerId = ownerId;
-  }
-
   public void setTags(Set<String> tags) {
     this.tags = tags;
   }
 
-  public void setMembersIds(Set<String> membersIds) {
-    this.membersIds = membersIds;
+  public User getOwner() {
+    return owner;
   }
 
-  public void setProjectsIds(Set<String> projectsIds) {
-    this.projectsIds = projectsIds;
+  public void setOwner(User owner) {
+    this.owner = owner;
+  }
+
+  public Set<User> getMembers() {
+    return members;
+  }
+
+  public void setMembers(Set<User> members) {
+    this.members = members;
+  }
+
+  public Set<Project> getProjects() {
+    return projects;
+  }
+
+  public void setProjects(Set<Project> projects) {
+    this.projects = projects;
+  }
+
+  public Long getId() {
+    return id;
+  }
+
+  public void setId(Long id) {
+    this.id = id;
   }
 
 }
