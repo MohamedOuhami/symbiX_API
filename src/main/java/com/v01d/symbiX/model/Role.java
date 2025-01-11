@@ -1,8 +1,6 @@
 package com.v01d.symbiX.model;
 
 
-import org.hibernate.annotations.Tables;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;

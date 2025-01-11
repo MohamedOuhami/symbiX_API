@@ -1,9 +1,13 @@
 package com.v01d.symbiX.model;
 
+import java.util.List;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -26,59 +30,17 @@ public class Team {
 
   private String description;
 
-  private Set<String> tags;
-
   @ManyToOne
-  @JoinColumn(name = "owner_id", nullable = false)
-  private User owner;
+  @JoinColumn(name = "leader_id")
+  private User leader;
 
-  @ManyToMany(mappedBy = "teams")
+  @ManyToMany(fetch= FetchType.EAGER)
   private Set<User> members;
 
-  @ManyToMany
-  @JoinTable(name = "teams_projects", joinColumns = @JoinColumn(name = "team_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "project_id", referencedColumnName = "id"))
-  private Set<Project> projects;
+
+  private Set<String> tags;
 
   public Team() {
-  }
-
-  public Team(String name, String description, Set<String> tags, User owner) {
-    this.name = name;
-    this.description = description;
-    this.tags = tags;
-    this.owner = owner;
-  }
-
-  public String getDescription() {
-    return description;
-  }
-
-  public String getName() {
-    return name;
-  }
-
-  public Set<String> getTags() {
-    return tags;
-  }
-
-  public void setName(String name) {
-    this.name = name;
-  }
-
-  public void setDescription(String description) {
-    this.description = description;
-  }
-
-  public void setTags(Set<String> tags) {
-    this.tags = tags;
-  }
-
-  public User getOwner() {
-    return owner;
-  }
-
-  public void setOwner(User owner) {
-    this.owner = owner;
   }
 
   public Set<User> getMembers() {
@@ -89,12 +51,12 @@ public class Team {
     this.members = members;
   }
 
-  public Set<Project> getProjects() {
-    return projects;
-  }
-
-  public void setProjects(Set<Project> projects) {
-    this.projects = projects;
+  public Team(String name, String description,Set<String> tags) {
+    this.name = name;
+    this.description = description;
+    //this.leader = leader;
+     //this.members = members;
+    this.tags = tags;
   }
 
   public Long getId() {
@@ -103,6 +65,46 @@ public class Team {
 
   public void setId(Long id) {
     this.id = id;
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  public String getDescription() {
+    return description;
+  }
+
+  public void setDescription(String description) {
+    this.description = description;
+  }
+
+  public User getLeader() {
+    return leader;
+  }
+
+  public void setLeader(User leader) {
+    this.leader = leader;
+  }
+  //
+  // public Set<User> getMembers() {
+  // return members;
+  // }
+  //
+  // public void setMembers(Set<User> members) {
+  // this.members = members;
+  // }
+
+  public Set<String> getTags() {
+    return tags;
+  }
+
+  public void setTags(Set<String> tags) {
+    this.tags = tags;
   }
 
 }

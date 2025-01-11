@@ -1,9 +1,7 @@
 package com.v01d.symbiX.service;
 
-
 import java.time.LocalDate;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -13,8 +11,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCrypt;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.v01d.symbiX.dto.LoginRequestDto;
@@ -23,6 +19,7 @@ import com.v01d.symbiX.model.Role;
 import com.v01d.symbiX.model.User;
 import com.v01d.symbiX.repository.RoleRepository;
 import com.v01d.symbiX.repository.UserRepository;
+
 /**
  * AuthServiceImpl
  */
@@ -56,12 +53,11 @@ public class AuthServiceImpl {
     // Generate the token based on the email and a secret key
     String token = jwtTokenProvider.generateToken(authentication);
 
-
     // Return the token to the user
     return token;
   }
 
-  public User register(RegisterDto registerDto) throws Exception{
+  public User register(RegisterDto registerDto) throws Exception {
 
     // Get the email and the username coming from the request
     String registerEmail = registerDto.getEmail();
@@ -73,22 +69,13 @@ public class AuthServiceImpl {
 
       throw new Exception("The user already exists");
     } else {
-
-      Set<Role> userSet = new HashSet<>();
-      Set<Role> adminSet = new HashSet<>();
-
-      Role userRole = roleRepository.findByName("ROLE_USER").get();
-      Role adminRole = roleRepository.findByName("ROLE_ADMIN").get();
-
-      userSet.add(userRole);
-      adminSet.add(adminRole);
-
+      Set<Role> addedRoles = roleRepository.findAllByNameIn(registerDto.getRole());
       String enteredPassword = registerDto.getPassword();
 
       // Hash the password before storing
       String hashedPassword = BCrypt.hashpw(enteredPassword, BCrypt.gensalt());
       User userToSave = new User(registerDto.getFirstName(), registerDto.getLastName(), registerDto.getUsername(),
-          registerDto.getEmail(), hashedPassword,LocalDate.of(2001, 06, 27),adminSet);
+          registerDto.getEmail(), hashedPassword, LocalDate.of(2001, 06, 27), addedRoles);
 
       User userSaved = userRepository.save(userToSave);
       return userSaved;

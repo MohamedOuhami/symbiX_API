@@ -4,6 +4,8 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -18,9 +20,6 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Data;
 
-/**
- * User
- */
 @Entity
 @Data
 @Table(name = "users")
@@ -47,31 +46,17 @@ public class User {
 
   private LocalDate dob;
 
-  @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = false)
-  private List<Project> projectsLeader;
-
-  @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = false)
-  private List<Team> teamsLeader;
-
-
-  // Do a Many To Many relationship between the users and the role
   @ManyToMany(fetch = FetchType.EAGER)
-  // Create a join table that has the id of the user_id referencing the id
-  // attribute of the user, and role_if for the attribute id of the role
   @JoinTable(name = "users_roles", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
   private Set<Role> roles;
 
-  @ManyToMany(fetch = FetchType.EAGER)
-  @JoinTable(name = "users_teams", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "team_id", referencedColumnName = "id"))
-  private List<Team> teams;
+  // Teams Attributes
+  @OneToMany(mappedBy = "leader", orphanRemoval = true)
+  @JsonIgnore
+  private List<Team> teamsManaged;
 
-  @ManyToMany(fetch = FetchType.EAGER)
-  @JoinTable(name = "users_projects", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "project_id", referencedColumnName = "id"))
-  private List<Project> projects;
-
-  @ManyToMany(fetch = FetchType.EAGER)
-  @JoinTable(name = "users_tasks", joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "task_id", referencedColumnName = "id"))
-  private List<Task> tasks;
+  @ManyToMany(mappedBy="members")
+  private Set<Team> teamsJoined;
 
   public User() {
   }
@@ -85,6 +70,18 @@ public class User {
     this.password = password;
     this.roles = roles;
     this.dob = dob;
+  }
+
+  public User(String firstName, String lastName, String username, String email, String password, LocalDate dob,
+      Set<Role> roles, Set<Team> teamsJoined) {
+    this.firstName = firstName;
+    this.lastName = lastName;
+    this.username = username;
+    this.email = email;
+    this.password = password;
+    this.roles = roles;
+    this.dob = dob;
+    this.teamsJoined = teamsJoined;
   }
 
   public Long getId() {
@@ -151,28 +148,19 @@ public class User {
     this.dob = dob;
   }
 
-  public List<Team> getTeams() {
-    return teams;
+  public List<Team> getTeamsManaged() {
+    return teamsManaged;
   }
 
-  public void setTeams(List<Team> teams) {
-    this.teams = teams;
+  public void setTeamsManaged(List<Team> teamsManaged) {
+    this.teamsManaged = teamsManaged;
   }
 
-  public List<Project> getProjects() {
-    return projects;
+  public Set<Team> getTeamsJoined() {
+    return teamsJoined;
   }
 
-  public void setProjects(List<Project> projects) {
-    this.projects = projects;
+  public void setTeamsJoined(Set<Team> teamsJoined) {
+    this.teamsJoined = teamsJoined;
   }
-
-  public List<Task> getTasks() {
-    return tasks;
-  }
-
-  public void setTasks(List<Task> tasks) {
-    this.tasks = tasks;
-  }
-
 }

@@ -1,8 +1,6 @@
 package com.v01d.symbiX.controller;
 
 
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +13,6 @@ import com.v01d.symbiX.dto.AuthResponseDto;
 import com.v01d.symbiX.dto.LoginRequestDto;
 import com.v01d.symbiX.dto.RegisterDto;
 import com.v01d.symbiX.model.User;
-import com.v01d.symbiX.repository.UserRepository;
 import com.v01d.symbiX.service.AuthServiceImpl;
 /**
  * AuthController
@@ -26,9 +23,6 @@ public class AuthController {
 
   @Autowired
   private AuthServiceImpl authService;
-
-  @Autowired
-  private UserRepository userRepository;
 
   @PostMapping("/login")
   // Build the Login REST api

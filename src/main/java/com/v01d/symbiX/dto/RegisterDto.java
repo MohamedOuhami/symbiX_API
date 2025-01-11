@@ -1,5 +1,6 @@
 package com.v01d.symbiX.dto;
 
+import java.util.Set;
 
 /**
  * RegisterDto
@@ -11,13 +12,16 @@ public class RegisterDto {
   private String email;
   private String password;
   private String username;
+  private Set<String> role;
 
-  public RegisterDto(String firstName, String lastName, String username, String email, String password) {
+  public RegisterDto(String firstName, String lastName, String username, String email, String password,
+      Set<String> role) {
     this.firstName = firstName;
     this.lastName = lastName;
     this.username = username;
     this.email = email;
     this.password = password;
+    this.role = role;
   }
 
   public String getFirstName() {
@@ -58,6 +62,14 @@ public class RegisterDto {
 
   public void setUsername(String username) {
     this.username = username;
+  }
+
+  public Set<String> getRole() {
+    return role;
+  }
+
+  public void setRole(Set<String> role) {
+    this.role = role;
   }
 
 }
