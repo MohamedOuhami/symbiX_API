@@ -56,6 +56,7 @@ public class User {
   private List<Team> teamsManaged;
 
   @ManyToMany(mappedBy="members")
+  @JsonIgnore
   private Set<Team> teamsJoined;
 
   public User() {
@@ -70,18 +71,6 @@ public class User {
     this.password = password;
     this.roles = roles;
     this.dob = dob;
-  }
-
-  public User(String firstName, String lastName, String username, String email, String password, LocalDate dob,
-      Set<Role> roles, Set<Team> teamsJoined) {
-    this.firstName = firstName;
-    this.lastName = lastName;
-    this.username = username;
-    this.email = email;
-    this.password = password;
-    this.roles = roles;
-    this.dob = dob;
-    this.teamsJoined = teamsJoined;
   }
 
   public Long getId() {

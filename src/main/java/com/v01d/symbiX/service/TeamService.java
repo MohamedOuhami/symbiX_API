@@ -62,9 +62,11 @@ public class TeamService {
 
     User leader = userRepository.findById(teamDto.getLeaderId()).get();
 
-    Set<User> members = new HashSet<>(userRepository.findAllById(teamDto.getMemberIds())); 
+    Set<User> leaderSet = new HashSet<>();
+
+    leaderSet.add(leader);
     newTeam.setLeader(leader);
-    newTeam.setMembers(members);
+    newTeam.setMembers(leaderSet);
 
     return teamRepository.save(newTeam);
   }
@@ -90,5 +92,46 @@ public class TeamService {
       throw new Exception("Could not find the team of id " + id);
     }
   }
+
+  // Add members to the team
+  public Team assignMembers(Long teamId,Set<Long> membersIds) throws Exception{
+
+    // Get the team to modify
+    Optional<Team> optTeam = teamRepository.findById(teamId);
+
+    // Checking if the team exists
+    if(optTeam.isPresent()){
+      
+      Team foundTeam = optTeam.get();
+      // Get the current members of the team
+      Set<User> currentMembers = foundTeam.getMembers();
+
+      // Get the new members
+      Set<User> newMembers = new HashSet<>(userRepository.findAllById(membersIds));
+
+      currentMembers.addAll(newMembers);
+
+      foundTeam.setMembers(currentMembers);
+
+      return teamRepository.save(foundTeam);
+
+    }
+    else {
+      throw new Exception("Could not assign member to team");
+    }
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
   
 }

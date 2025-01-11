@@ -1,6 +1,7 @@
 package com.v01d.symbiX.controller;
 
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.v01d.symbiX.dto.TeamDto;
@@ -60,6 +62,12 @@ public class TeamController {
   @PutMapping("/{id}")
   public ResponseEntity<Team> editTeam(@PathVariable Long id, @RequestBody TeamEditDto teamDto) throws Exception{
     return ResponseEntity.ok(teamService.editTeam(id,teamDto));
+  }
+
+  // Assign a new member to the team
+  @PostMapping("/assignMembers/{team_id}")
+  public ResponseEntity<Team> assignMembers(@PathVariable Long team_id,@RequestBody Set<Long> membersIds) throws Exception{
+    return ResponseEntity.ok(teamService.assignMembers(team_id,membersIds));
   }
 
   

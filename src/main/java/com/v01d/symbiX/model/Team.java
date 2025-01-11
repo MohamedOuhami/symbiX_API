@@ -34,9 +34,8 @@ public class Team {
   @JoinColumn(name = "leader_id")
   private User leader;
 
-  @ManyToMany(fetch= FetchType.EAGER)
+  @ManyToMany(fetch = FetchType.EAGER)
   private Set<User> members;
-
 
   private Set<String> tags;
 
@@ -51,11 +50,9 @@ public class Team {
     this.members = members;
   }
 
-  public Team(String name, String description,Set<String> tags) {
+  public Team(String name, String description, Set<String> tags) {
     this.name = name;
     this.description = description;
-    //this.leader = leader;
-     //this.members = members;
     this.tags = tags;
   }
 
@@ -90,14 +87,6 @@ public class Team {
   public void setLeader(User leader) {
     this.leader = leader;
   }
-  //
-  // public Set<User> getMembers() {
-  // return members;
-  // }
-  //
-  // public void setMembers(Set<User> members) {
-  // this.members = members;
-  // }
 
   public Set<String> getTags() {
     return tags;

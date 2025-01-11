@@ -11,7 +11,6 @@ public class TeamDto {
   private String description;
   private Set<String> tags;
   private Long leaderId;
-  private Set<Long> membersIds;
 
   public String getName() {
     return name;
@@ -43,14 +42,6 @@ public class TeamDto {
 
   public void setLeaderId(Long leaderId) {
     this.leaderId = leaderId;
-  }
-
-  public Set<Long> getMemberIds() {
-    return membersIds;
-  }
-
-  public void setMemberIds(Set<Long> memberIds) {
-    this.membersIds = memberIds;
   }
 
 }
