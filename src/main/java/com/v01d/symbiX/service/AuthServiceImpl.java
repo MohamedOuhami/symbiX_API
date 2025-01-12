@@ -13,8 +13,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
-import com.v01d.symbiX.dto.LoginRequestDto;
-import com.v01d.symbiX.dto.RegisterDto;
+import com.v01d.symbiX.dto.Request.LoginRequestDto;
+import com.v01d.symbiX.dto.Request.RegisterDto;
 import com.v01d.symbiX.model.Role;
 import com.v01d.symbiX.model.User;
 import com.v01d.symbiX.repository.RoleRepository;

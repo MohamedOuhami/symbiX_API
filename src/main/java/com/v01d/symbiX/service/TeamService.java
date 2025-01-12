@@ -2,18 +2,22 @@ package com.v01d.symbiX.service;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.v01d.symbiX.dto.TeamDto;
-import com.v01d.symbiX.dto.TeamEditDto;
+import com.v01d.symbiX.dto.Request.AssignMemberToTeamRequest;
+import com.v01d.symbiX.dto.Request.TeamDto;
+import com.v01d.symbiX.dto.Request.TeamEditDto;
 import com.v01d.symbiX.model.Team;
 import com.v01d.symbiX.model.User;
 import com.v01d.symbiX.repository.TeamRepository;
 import com.v01d.symbiX.repository.UserRepository;
+
+import jakarta.persistence.PersistenceException;
 
 /**
  * TeamService
@@ -29,34 +33,32 @@ public class TeamService {
   private UserRepository userRepository;
 
   // Get all the teams
-  public List<Team> getAllTeams(){
+  public List<Team> getAllTeams() {
     return teamRepository.findAll();
   }
 
   // Get the team by Its id
-  public Team getTeamById(Long id) throws Exception{
-    Optional<Team> optTeam =  teamRepository.findById(id);
-    if(optTeam.isPresent()){
+  public Team getTeamById(Long id) throws Exception {
+    Optional<Team> optTeam = teamRepository.findById(id);
+    if (optTeam.isPresent()) {
       return optTeam.get();
-    }
-    else {
+    } else {
       throw new Exception("Could not find the team of id " + id);
     }
   }
 
   // Delete Team by Id
-  public String deleteTeamById(Long id){
+  public String deleteTeamById(Long id) {
     try {
       teamRepository.deleteById(id);
       return "Team was deleted succesfully";
-    }
-    catch(Exception ex){
-      return "Error deleting the team : " + ex.getMessage(); 
+    } catch (Exception ex) {
+      return "Error deleting the team : " + ex.getMessage();
     }
   }
-  
-  // Create a team 
-  public Team createTeam(TeamDto teamDto){
+
+  // Create a team
+  public Team createTeam(TeamDto teamDto) {
 
     Team newTeam = new Team(teamDto.getName(), teamDto.getDescription(), teamDto.getTags());
 
@@ -72,12 +74,12 @@ public class TeamService {
   }
 
   // Edit a team
-  public Team editTeam(Long id, TeamEditDto teamDto) throws Exception{
+  public Team editTeam(Long id, TeamEditDto teamDto) throws Exception {
 
     // FInd the team by id
     Optional<Team> optTeam = teamRepository.findById(id);
 
-    if (optTeam.isPresent()){
+    if (optTeam.isPresent()) {
       Team foundTeam = optTeam.get();
 
       foundTeam.setName(teamDto.getName());
@@ -87,51 +89,25 @@ public class TeamService {
       // Save the new team info
       return teamRepository.save(foundTeam);
 
-    }
-    else {
+    } else {
       throw new Exception("Could not find the team of id " + id);
     }
   }
 
-  // Add members to the team
-  public Team assignMembers(Long teamId,Set<Long> membersIds) throws Exception{
-
+public String assignMembers(Long teamId, AssignMemberToTeamRequest assignMembersRequest) {
     // Get the team to modify
     Optional<Team> optTeam = teamRepository.findById(teamId);
 
-    // Checking if the team exists
-    if(optTeam.isPresent()){
-      
-      Team foundTeam = optTeam.get();
-      // Get the current members of the team
-      Set<User> currentMembers = foundTeam.getMembers();
-
-      // Get the new members
-      Set<User> newMembers = new HashSet<>(userRepository.findAllById(membersIds));
-
-      currentMembers.addAll(newMembers);
-
-      foundTeam.setMembers(currentMembers);
-
-      return teamRepository.save(foundTeam);
-
+    // Check if the team exists
+    if (optTeam.isEmpty()) {
+      return "Could not find the team of id " + teamId;
     }
-    else {
-      throw new Exception("Could not assign member to team");
-    }
-  }
+
+    Team foundTeam = optTeam.get();
+    System.out.println(foundTeam);
+
+    return "Works fine until now";
+}
 
 
-
-
-
-
-
-
-
-
-
-
-
-  
 }

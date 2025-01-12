@@ -1,4 +1,4 @@
-package com.v01d.symbiX.dto;
+package com.v01d.symbiX.dto.Request;
 
 import java.util.Set;
 

@@ -9,9 +9,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.v01d.symbiX.dto.AuthResponseDto;
-import com.v01d.symbiX.dto.LoginRequestDto;
-import com.v01d.symbiX.dto.RegisterDto;
+import com.v01d.symbiX.dto.Request.LoginRequestDto;
+import com.v01d.symbiX.dto.Request.RegisterDto;
+import com.v01d.symbiX.dto.Response.AuthResponseDto;
 import com.v01d.symbiX.model.User;
 import com.v01d.symbiX.service.AuthServiceImpl;
 /**
