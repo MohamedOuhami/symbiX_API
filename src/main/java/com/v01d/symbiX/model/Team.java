@@ -2,9 +2,6 @@ package com.v01d.symbiX.model;
 
 import java.util.Set;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -13,6 +10,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * Team
@@ -45,11 +44,4 @@ public class Team {
     this.tags = tags;
   }
 
-  // @Override
-  // public String toString() {
-  //   return "Team{" +
-  //       "id=" + id +
-  //       ", name='" + name + '\'' +
-  //       '}';
-  // }
 }

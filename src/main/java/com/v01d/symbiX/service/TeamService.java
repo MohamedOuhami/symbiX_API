@@ -94,7 +94,7 @@ public class TeamService {
     }
   }
 
-public String assignMembers(Long teamId, AssignMemberToTeamRequest assignMembersRequest) {
+  public String assignMembers(Long teamId, AssignMemberToTeamRequest assignMembersRequest) {
     // Get the team to modify
     Optional<Team> optTeam = teamRepository.findById(teamId);
 
@@ -107,7 +107,6 @@ public String assignMembers(Long teamId, AssignMemberToTeamRequest assignMembers
     System.out.println(foundTeam);
 
     return "Works fine until now";
-}
-
+  }
 
 }

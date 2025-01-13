@@ -2,9 +2,12 @@ package com.v01d.symbiX.dto.Request;
 
 import java.util.Set;
 
+import lombok.Data;
+
 /**
  * TeamEditDto
  */
+@Data
 public class TeamEditDto {
 
   private String name;
@@ -17,18 +20,6 @@ public class TeamEditDto {
     this.name = name;
     this.description = description;
     this.tags = tags;
-  }
-
-  public String getName() {
-    return name;
-  }
-
-  public String getDescription() {
-    return description;
-  }
-
-  public Set<String> getTags() {
-    return tags;
   }
 
 }
